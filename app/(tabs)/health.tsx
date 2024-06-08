@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Linking,
+  useColorScheme,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
@@ -42,8 +43,9 @@ const Health: React.FC = () => {
   const [meals, setMeals] = useState<MealsData | null>(null);
   const [diet, setDiet] = useState<string>("");
   const [calories, setCalories] = useState<number>(2000);
-  const [selectedDay, setSelectedDay] = useState<string>("monday");
+  const [selectedDay, setSelectedDay] = useState<string>("saturday");
   const navigation = useNavigation();
+  const cS = useColorScheme();
 
   const saveMeals = async (data: MealsData, calories: number, diet: string) => {
     try {
@@ -102,6 +104,7 @@ const Health: React.FC = () => {
           fontSize: 24,
           marginBottom: 15,
           textDecorationLine: "underline",
+          color: cS === "dark" ? "white" : "black",
         }}
       >
         Healthy Meals
@@ -114,9 +117,9 @@ const Health: React.FC = () => {
           gap: 10,
         }}
       >
-        <Text style={{ fontSize: 18 }}>Daily calories intake:</Text>
+        <Text style={{ fontSize: 18, color: cS === "dark" ? "white" : "black" }}>Daily calories intake:</Text>
         <TextInput
-          style={{ borderBottomWidth: 1, width: 100 }}
+          style={{ borderBottomWidth: 1, width: 100, color: cS === "dark" ? "white" : "black", backgroundColor: cS === "dark" ? "#4f4f4f" : "#f5f7fa" }}
           placeholder="Default: 2000"
           keyboardType="numeric"
           onChangeText={(text) => setCalories(parseInt(text, 10) || 2000)}
@@ -124,7 +127,7 @@ const Health: React.FC = () => {
         />
       </View>
 
-      <Text style={{ fontSize: 18 }}>Diet:</Text>
+      <Text style={{ fontSize: 18, color: cS === "dark" ? "white" : "black" }}>Diet:</Text>
       <Picker
         style={{ backgroundColor: "#dedede" }}
         mode="dropdown"
@@ -154,7 +157,7 @@ const Health: React.FC = () => {
         </Text>
       </TouchableOpacity>
       <View style={{ marginBottom: 20 }}>
-        <Text>Select Day:</Text>
+        <Text style={{ fontSize: 18, color: cS === "dark" ? "white" : "black" }}>Select Day:</Text>
         <Picker
           style={{ backgroundColor: "#dedede" }}
           mode="dropdown"
@@ -171,7 +174,7 @@ const Health: React.FC = () => {
         </Picker>
       </View>
 
-      <ScrollView style={{ borderRadius: 5, borderWidth: 2, padding: 10 }}>
+      <ScrollView style={{ borderRadius: 5, borderWidth: 2, padding: 10, borderColor: cS === "dark" ? "#dedede" : "black" }}>
         {meals &&
           meals[selectedDay] &&
           meals[selectedDay].meals.map((meal, index) => (
@@ -192,9 +195,9 @@ const Health: React.FC = () => {
                 style={{ width: 100, height: 100, marginRight: 20 }}
               />
               <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 18 }}>{meal.title}</Text>
-                <Text>Ready in {meal.readyInMinutes} mins</Text>
-                <Text>Servings: {meal.servings}</Text>
+                <Text style={{ fontSize: 18, color: cS === "dark" ? "white" : "black" }}>{meal.title}</Text>
+                <Text style={{ color: cS === "dark" ? "white" : "black" }}>Ready in {meal.readyInMinutes} mins</Text>
+                <Text style={{ color: cS === "dark" ? "white" : "black" }}>Servings: {meal.servings}</Text>
               </View>
               
             </View>

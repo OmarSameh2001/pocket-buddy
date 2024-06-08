@@ -1,11 +1,17 @@
-import { Dimensions, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 
 import { useState, useEffect } from "react";
 
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Temperature() {
   const [weather, setWeather] = useState(JSON.parse("null"));
@@ -14,7 +20,8 @@ export default function Temperature() {
   const [location, setLocation] = useState({});
   const vw = width / 100;
   const vh = height / 100;
-  const Weather_Key = "af95b5582bf544c0a64181401240406"
+  const Weather_Key = "af95b5582bf544c0a64181401240406";
+  const cS = useColorScheme();
 
   const getLocation = async () => {
     try {
@@ -52,7 +59,7 @@ export default function Temperature() {
     }
   };
 
-  const getWeather = async (loc : any) => {
+  const getWeather = async (loc: any) => {
     try {
       const response = await fetch(
         `http://api.weatherapi.com/v1/current.json?key=${Weather_Key}&q=${loc?.latitude},${loc?.longitude}&aqi=no`
@@ -76,24 +83,21 @@ export default function Temperature() {
   }, []);
 
   return (
-    
-      <View
-        style={{
-        }}
-      >
-        {weather ? (
-          <View
-            style={{
-              backgroundColor: "white", 
-              borderWidth: 2,
-              borderRadius: 5, // Optional: To give rounded corners to the box
-              minHeight: 20 * vh,
-            }}
-          >
-            <View style={{backgroundColor: "#ff4242", paddingVertical: 10}}>
+    <View style={{}}>
+      {weather ? (
+        <View
+          style={{
+            backgroundColor: cS === "dark" ? "black" : "white",
+            borderWidth: 2,
+            borderRadius: 5, // Optional: To give rounded corners to the box
+            minHeight: 20 * vh,
+            borderColor: cS === "dark" ? "gray" : "black",
+          }}
+        >
+          <View style={{ backgroundColor: "#ff4242", paddingVertical: 10 }}>
             <Text
               style={{
-                color: "black",
+                color: cS === "dark" ? "white" : "black",
                 alignSelf: "center",
                 textDecorationLine: "underline",
                 fontWeight: "bold",
@@ -102,57 +106,67 @@ export default function Temperature() {
             >
               Temperature Status
             </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 40,
-              }}
-            >
-              <Text style={{ color: "black"}}>
-                Degree: {weather?.current?.temp_c} °C
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 40,
+            }}
+          >
+            <Text style={{ color: cS === "dark" ? "white" : "black" }}>
+              Degree: {weather?.current?.temp_c} °C
+            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={{ color: cS === "dark" ? "white" : "black" }}>
+                {weather?.current?.condition?.text}
               </Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text style={{ color: "black" }}>
-                  {weather?.current?.condition?.text}
-                </Text>
-                <Image
-                  source={{ uri: `https:${weather?.current?.condition?.icon}` }}
-                  style={{ width: 64, height: 64 }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 40,
-              }}
-            >
-              <Text style={{ color: "black"}}>
-                City: {weather.location?.name}
-              </Text>
-              <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }} onPress={() => getWeather(location)}>
-                <Text style={{ color: "black" }}>
-                  Updated:{" "}
-                  {time
-                    ? new Date(time).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                    : null}
-                    <Ionicons name="reload-circle-outline" size={15} color="black"/>
-                </Text>
-              </TouchableOpacity>
+              <Image
+                source={{ uri: `https:${weather?.current?.condition?.icon}` }}
+                style={{ width: 64, height: 64 }}
+              />
             </View>
           </View>
-        ) : (
-          <Text>Loading weather...</Text>
-        )}
-      </View>
-    
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 40,
+            }}
+          >
+            <Text style={{ color: cS === "dark" ? "white" : "black" }}>
+              City: {weather.location?.name}
+            </Text>
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => getWeather(location)}
+            >
+              <Text style={{ color: cS === "dark" ? "white" : "black" }}>
+                Updated:{" "}
+                {time
+                  ? new Date(time).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : null}
+                <Ionicons
+                  name="reload-circle-outline"
+                  size={15}
+                  color={cS === "dark" ? "white" : "black"}
+                />
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : (
+        <Text>Loading weather...</Text>
+      )}
+    </View>
   );
 }

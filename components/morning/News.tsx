@@ -5,6 +5,7 @@ import {
   Linking,
   TouchableOpacity,
   Dimensions,
+  useColorScheme,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -16,6 +17,7 @@ export default function News() {
   const vw = width / 100;
   const vh = height / 100;
   const News_Key = "7cb25c29b6e54779b969a9b1e8b874a4";
+  const cS = useColorScheme();
 
   const storeNews = async (value: any) => {
     try {
@@ -74,6 +76,7 @@ export default function News() {
         style={{
           borderRadius: 5,
           borderWidth: 2,
+          borderColor: cS === "dark" ? "gray" : "black",
           justifyContent: "space-between",
           maxHeight: 45 * vh,
         }}
@@ -88,10 +91,10 @@ export default function News() {
             padding: 20,
           }}
         >
-          <FontAwesome5 name="newspaper" size={30} color="black" />
+          <FontAwesome5 name="newspaper" size={30} color= {cS === "dark" ? "white" : "black"} />
           <Text
             style={{
-              color: "black",
+              color: cS === "dark" ? "white" : "black",
               fontWeight: "bold",
               fontSize: 20,
             }}
@@ -101,20 +104,20 @@ export default function News() {
         </View>
 
         {news ? (
-          <ScrollView>
+          <ScrollView style={{backgroundColor: cS === "dark" ? "black" : "white"}}>
             {news.map((item : any, index) => (
               <TouchableOpacity key={index} onPress={() => openUrl(item.url)}>
-                <View key={index} style={{ padding: 10, borderWidth: 1 }}>
+                <View key={index} style={{ padding: 10, borderWidth: 1, borderColor: cS === "dark" ? "gray" : "black" }}>
                   <Text
                     style={{
-                      color: "black",
+                      color: cS === "dark" ? "white" : "black",
                       alignSelf: "center",
                       textDecorationLine: "underline",
                     }}
                   >
                     {item.author}
                   </Text>
-                  <Text style={{ color: "black" }}>{item.title}</Text>
+                  <Text style={{ color: cS === "dark" ? "white" : "black" }}>{item.title}</Text>
                 </View>
               </TouchableOpacity>
             ))}

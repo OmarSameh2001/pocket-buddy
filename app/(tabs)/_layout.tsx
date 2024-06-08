@@ -1,13 +1,16 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import  Colors  from '@/constants/Colors';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Appearance, useColorScheme } from 'react-native';
 
 
 
 export default function TabLayout() {
-
+  const cS = useColorScheme();
+  
+  
   return (
     <Tabs
       screenOptions={{
@@ -18,10 +21,10 @@ export default function TabLayout() {
         name="index"
         options={{
           tabBarLabel: ({ focused }) => (
-            <Text style={{ color: focused ? 'orange' : 'black', fontSize: 12 }}>Morning</Text>
+            <Text style={{ color: focused ? 'orange' : cS === "dark" ? "white" :  'black', fontSize: 12 }}>Morning</Text>
           ),
           tabBarIcon: ({ focused }) => (
-            <FontAwesome name="sun-o" size={28} color={focused ? "orange" : "black"} />
+            <FontAwesome name="sun-o" size={28} color={focused ? "orange" : cS === "dark" ? "white" :  "black"} />
           ),
         }}
       />
@@ -29,10 +32,10 @@ export default function TabLayout() {
         name="entertainment"
         options={{
           tabBarLabel: ({ focused }) => (
-            <Text style={{ color: focused ? 'red' : 'black', fontSize: 12 }}>Watch</Text>
+            <Text style={{ color: focused ? 'red' : cS === "dark" ? "white" : 'black', fontSize: 12 }}>Watch</Text>
           ),
           tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons name="movie-open" size={28} color={focused ? "red" : "black"} />
+            <MaterialCommunityIcons name="movie-open" size={28} color={focused ? "red" : cS === "dark" ? "white" : "black"} />
           ),
         }}
       />
@@ -40,10 +43,10 @@ export default function TabLayout() {
         name="health"
         options={{
           tabBarLabel: ({ focused }) => (
-            <Text style={{ color: focused ? 'green' : 'black', fontSize: 12 }}>Health</Text>
+            <Text style={{ color: focused ? 'green' : cS === "dark" ? "white" : 'black', fontSize: 12 }}>Health</Text>
           ),
           tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons name="food-apple" size={28} color={focused ? "green" : "black"} />
+            <MaterialCommunityIcons name="food-apple" size={28} color={focused ? "green" : cS === "dark" ? "white" : "black"} />
           ),
         }}
       />

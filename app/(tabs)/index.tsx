@@ -12,7 +12,7 @@ export default function Index() {
   
 
   return (
-    <ScrollView style={{ backgroundColor: "white",  paddingHorizontal: 2  }}>
+    <ScrollView style={{  paddingHorizontal: 2  }}>
       <Temperature />
       <News />
       <Quran />
