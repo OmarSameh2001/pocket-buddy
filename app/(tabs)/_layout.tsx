@@ -29,7 +29,7 @@ export default function TabLayout() {
         name="entertainment"
         options={{
           tabBarLabel: ({ focused }) => (
-            <Text style={{ color: focused ? 'red' : 'black', fontSize: 12 }}>Entertainment</Text>
+            <Text style={{ color: focused ? 'red' : 'black', fontSize: 12 }}>Watch</Text>
           ),
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons name="movie-open" size={28} color={focused ? "red" : "black"} />

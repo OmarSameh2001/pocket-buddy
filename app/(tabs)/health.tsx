@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { Link } from 'expo-router';
 import {
   Text,
   View,
@@ -10,6 +11,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
+import {  useNavigation } from '@react-navigation/native';
 
 type Meal = {
   id: number;
@@ -38,9 +40,10 @@ const Meals_Key = "0525a71b669846648635672782f52319";
 
 const Health: React.FC = () => {
   const [meals, setMeals] = useState<MealsData | null>(null);
-  const [diet, setDiet] = useState<string | null>(null);
+  const [diet, setDiet] = useState<string>("");
   const [calories, setCalories] = useState<number>(2000);
   const [selectedDay, setSelectedDay] = useState<string>("monday");
+  const navigation = useNavigation();
 
   const saveMeals = async (data: MealsData, calories: number, diet: string) => {
     try {
@@ -74,7 +77,7 @@ const Health: React.FC = () => {
       const data = await response.json();
       if (data.week) {
         setMeals(data.week);
-        saveMeals(data.week, calories, diet);
+        saveMeals(data.week, calories, diet ?? "" );
       } else {
         throw new Error("Failed to fetch meals data");
       }
@@ -92,7 +95,7 @@ const Health: React.FC = () => {
   }, [fetchData]);
 
   return (
-    <ScrollView style={{ padding: 10, marginTop: 20 }}>
+    <ScrollView style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
       <Text
         style={{
           textAlign: "center",
@@ -172,7 +175,8 @@ const Health: React.FC = () => {
         {meals &&
           meals[selectedDay] &&
           meals[selectedDay].meals.map((meal, index) => (
-            <View
+            <Link href={{ pathname: `../Recipie`, params: { id: meal.id, title: meal.title } }} key={index}>
+              <View
               key={index}
               style={{
                 flexDirection: "row",
@@ -180,6 +184,7 @@ const Health: React.FC = () => {
                 marginBottom: 20,
               }}
             >
+              
               <Image
                 source={{
                   uri: `https://img.spoonacular.com/recipes/${meal.id}-556x370.jpg`,
@@ -191,7 +196,9 @@ const Health: React.FC = () => {
                 <Text>Ready in {meal.readyInMinutes} mins</Text>
                 <Text>Servings: {meal.servings}</Text>
               </View>
+              
             </View>
+            </Link>
           ))}
       </ScrollView>
     </ScrollView>

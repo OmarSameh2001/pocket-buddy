@@ -10,8 +10,8 @@ import { Ionicons } from '@expo/vector-icons';
 export default function Temperature() {
   const [weather, setWeather] = useState(JSON.parse("null"));
   const [time, setTime] = useState(Number);
-  const [location, setLocation] = useState(JSON.parse("null"));
   const { width, height } = Dimensions.get("window");
+  const [location, setLocation] = useState({});
   const vw = width / 100;
   const vh = height / 100;
   const Weather_Key = "af95b5582bf544c0a64181401240406"
@@ -26,7 +26,7 @@ export default function Temperature() {
       let result = await Location.getCurrentPositionAsync({});
       const { coords } = result;
       setLocation(coords);
-      getWeather();
+      getWeather(coords);
     } catch (error) {
       console.log(error);
     }
@@ -52,13 +52,13 @@ export default function Temperature() {
     }
   };
 
-  const getWeather = async () => {
+  const getWeather = async (loc : any) => {
     try {
       const response = await fetch(
-        `http://api.weatherapi.com/v1/current.json?key=${Weather_Key}&q=${location?.latitude},${location?.longitude}&aqi=no`
+        `http://api.weatherapi.com/v1/current.json?key=${Weather_Key}&q=${loc?.latitude},${loc?.longitude}&aqi=no`
       );
       const data = await response.json();
-      if (data.current.temp_c) {
+      if (data) {
         setWeather(data);
         storeWeather(data);
         setTime(Date.now());
@@ -79,7 +79,6 @@ export default function Temperature() {
     
       <View
         style={{
-          marginTop: "10%",
         }}
       >
         {weather ? (
@@ -136,7 +135,7 @@ export default function Temperature() {
               <Text style={{ color: "black"}}>
                 City: {weather.location?.name}
               </Text>
-              <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }} onPress={() => getWeather()}>
+              <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }} onPress={() => getWeather(location)}>
                 <Text style={{ color: "black" }}>
                   Updated:{" "}
                   {time

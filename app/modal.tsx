@@ -3,8 +3,13 @@ import { Platform, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { useRoute } from '@react-navigation/native';
 
-export default function ModalScreen() {
+export default function RecipeScreen() {
+  const route = useRoute();
+
+  const itemId: string = (route.params as { itemId: string })?.itemId || '';
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>

@@ -6,7 +6,7 @@ export default function morning() {
   return (
     <View
     style={{
-      marginTop: "10%",
+      
       }}
       >
       <Movies />

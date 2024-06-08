@@ -75,7 +75,7 @@ export default function News() {
           borderRadius: 5,
           borderWidth: 2,
           justifyContent: "space-between",
-          maxHeight: 50 * vh,
+          maxHeight: 45 * vh,
         }}
       >
         <View
